@@ -20,8 +20,14 @@ jobs:
       with:
         python-version: '3.10'
 
-    - name: Install Bandit
+    - name: Install dependencies
       run: pip install bandit
 
     - name: Run Bandit
       run: bandit -r . -f json -o bandit-report.json
+
+    - name: Upload Bandit Report
+      uses: actions/upload-artifact@v3
+      with:
+        name: bandit-report
+        path: bandit-report.json
