@@ -21,19 +21,16 @@ jobs:
         python-version: '3.10'
 
     - name: Install dependencies
-      run: pip install bandit jq
+      run: pip install bandit
 
-    - name: Run Bandit
-      run: bandit -r . -f json -o bandit-report.json --exit-zero
+    - name: Run Bandit Scan with Medium and High Confidence Only 
+      run: bandit -r . --confidence-level medium --severity-level medium -f json -o bandit-report.json --exit-zero
+      
+    - name: Display Bandit Report
+      run: cat bandit-report.json
 
-    - name: Filter High Severity Vulnerabilities
-      run: jq '{results: [.results[] | select(.issue_severity == "HIGH")], metrics: .metrics}' bandit-report.json > bandit-report-high.json
-
-    - name: Display High Severity Report
-      run: cat bandit-report-high.json
-
-    - name: Upload High Severity Bandit Report
+    - name: Upload Bandit Report
       uses: actions/upload-artifact@v3
       with:
-        name: bandit-report-high
-        path: bandit-report-high.json
+        name: bandit-report
+        path: bandit-report.json
