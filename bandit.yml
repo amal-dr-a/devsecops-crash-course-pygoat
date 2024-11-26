@@ -1,0 +1,8 @@
+exclude_dirs:
+  - tests
+  - migrations
+
+skipped_tests:
+  - B404  # subprocess
+  - B311  # random for security
+  - B105  # Hardcoded passwords
